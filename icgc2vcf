@@ -33,7 +33,7 @@ EOF
 
 # Print head
 cat <<EOF 
-#CHROM POS     ID        REF    ALT     QUAL FILTER INFO                              FORMAT      NA00001        NA00002        NA00003 
+#CHROM POS     ID        REF    ALT     QUAL FILTER INFO                              FORMAT
 EOF
 
 # print content 
