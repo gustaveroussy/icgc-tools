@@ -1,11 +1,13 @@
 #!/bin/bash 
 
 # Usage Info 
+# ICGC : first base of chromosom start a 1 , size = end - start + 1 
+# BED : first base is 0 , end is last +1 . size = end - start 
 
 show_help()
 {
 cat <<EOF 
-Usage: ${0##*/} [-r] [FILE]...
+Usage: ${0##*/} [-r] [FILE] > output.bed
 Convert icgc single mutation tabular file ( tsv.gz ) to bed file. You can specify if the source file is from open or restricted access.
 Input file comes from https://dcc.icgc.org/ and are simple somatic mutation. 
    -h          display this help and exit
@@ -15,12 +17,6 @@ EOF
 
 from_restricted()
 {
-FILENAME=$1
-FULL_NAME=$(basename $FILENAME)
-BASE_NAME=${FULL_NAME%%.*}
-FILE_DIR=$(dirname $FILENAME)
-
-
 #9 		= chromosom
 #10 	= start based 1 
 #11		= end 
@@ -28,17 +24,12 @@ FILE_DIR=$(dirname $FILENAME)
 #19		= reference allele
 #20		= alternative allele
 
-zcat $FILENAME|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print $9,$10,$10,$2,$19,$20}'|gzip > $FILE_DIR/$BASE_NAME.bed.gz
+zcat $FILENAME|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print $9,$10-1,$11,$2,$19,$20}' 
 }
 
 
 from_open()
 {
-FILENAME=$1
-FULL_NAME=$(basename $FILENAME)
-BASE_NAME=${FULL_NAME%%.*}
-FILE_DIR=$(dirname $FILENAME)
-
 #9 		= chromosom
 #10 	= start based 1 
 #11		= end 
@@ -46,7 +37,7 @@ FILE_DIR=$(dirname $FILENAME)
 #16		= reference allele
 #17		= alternative allele
 
-zcat $FILENAME|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print "chr"$9,$10,$10,$2,$16,$17}'|gzip > $FILE_DIR/$BASE_NAME.bed.gz
+zcat $FILENAME|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print "chr"$9,$10-1,$10,$2,$16,$17}' 
 
 }
 
