@@ -24,7 +24,7 @@ from_restricted()
 #19		= reference allele
 #20		= alternative allele
 
-zcat $1|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print $9,$10-1,$11,$2,$19,$20}' 
+zcat $1|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print "chr"$9,$10-1,$11,$2,$19,$20}' 
 }
 
 
@@ -63,7 +63,7 @@ done
 	
 shift "$((OPTIND-1))"
 
-if [ $IS_RESTRICTED -eq 1 ]
+if [ $IS_RESTRICTED -eq 0 ]
 	then 
 		from_open $1 
 	else 
