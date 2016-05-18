@@ -24,7 +24,7 @@ from_restricted()
 #19		= reference allele
 #20		= alternative allele
 
-zcat $FILENAME|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print $9,$10-1,$11,$2,$19,$20}' 
+zcat $1|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print $9,$10-1,$11,$2,$19,$20}' 
 }
 
 
@@ -37,7 +37,7 @@ from_open()
 #16		= reference allele
 #17		= alternative allele
 
-zcat $FILENAME|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print "chr"$9,$10-1,$10,$2,$16,$17}' 
+zcat $1|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{print "chr"$9,$10-1,$10,$2,$16,$17}' 
 
 }
 
@@ -60,8 +60,7 @@ case "$opt" in
 esac 
 done
 
-if [ $OPTIND -eq 1 ]; then show_help >&2; exit 1; fi
-
+	
 shift "$((OPTIND-1))"
 
 if [ $IS_RESTRICTED -eq 1 ]

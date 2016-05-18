@@ -29,6 +29,7 @@ EOF
 cat<<EOF
 ##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
 ##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=PATIENT,Number=1,Type=String,Description="Patient ID">
 EOF
 
 # Print head
@@ -37,7 +38,7 @@ cat <<EOF
 EOF
 
 # print content 
-zcat $1|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{gsub( "-",".",$16);gsub( "-",".",$17); print "chr"$9,$10,$1,$16,$17,$18,"PASS","DP="$18";AF="$19}' 
+zcat $1|awk 'BEGIN{OFS="\t"; FS="\t"}NR>1{gsub( "-",".",$16);gsub( "-",".",$17); print "chr"$9,$10,$1,$16,$17,$18,"PASS","PATIENT="$2";DP="$18";AF="$19}' 
 
 }
 
@@ -67,8 +68,6 @@ case "$opt" in
 esac 
 done
 
-
-if [ $OPTIND -eq 1 ]; then show_help >&2; exit 1; fi
 
 shift "$((OPTIND-1))"
 from_open $1
